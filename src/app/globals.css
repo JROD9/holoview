@@ -3,19 +3,41 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 10, 10, 20;
+  --neon-purple: 177, 0, 255;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
+
+.neon-purple {
+  color: rgb(var(--neon-purple));
+  text-shadow: 0 0 5px rgba(var(--neon-purple), 0.5), 0 0 10px rgba(var(--neon-purple), 0.3), 0 0 15px
+    rgba(var(--neon-purple), 0.1);
+}
+
+.neon-purple-box {
+  box-shadow: 0 0 5px rgba(var(--neon-purple), 0.5), 0 0 10px rgba(var(--neon-purple), 0.3), 0 0 15px
+    rgba(var(--neon-purple), 0.1);
+}
+
+.futuristic-button {
+  @apply bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 ease-in-out;
+  box-shadow: 0 0 10px rgba(var(--neon-purple), 0.5), 0 0 20px rgba(var(--neon-purple), 0.3), inset 0 0 15px
+    rgba(var(--neon-purple), 0.2);
+}
+
+.futuristic-button:hover {
+  box-shadow: 0 0 15px rgba(var(--neon-purple), 0.7), 0 0 30px rgba(var(--neon-purple), 0.5), inset 0 0 20px
+    rgba(var(--neon-purple), 0.3);
+}
+
+.futuristic-panel {
+  @apply bg-black bg-opacity-50 border border-purple-500/30 rounded-lg p-6;
+  box-shadow: 0 0 20px rgba(var(--neon-purple), 0.1);
+}
+
