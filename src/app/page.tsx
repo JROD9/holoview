@@ -1,8 +1,10 @@
-"use client"
+"use client"  // Add this at the very top of your file
 
 import Link from "next/link"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { useSession, signIn } from "next-auth/react"
+import React from "react"
+
 
 const data = [
   { name: "Jan", users: 4000, interviews: 2400 },

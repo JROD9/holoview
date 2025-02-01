@@ -2,16 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 10, 10, 20;
-  --neon-purple: 177, 0, 255;
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 267 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 0 0% 9%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 267 100% 50%;
+    --radius: 0.75rem;
+    --neon-purple: 177, 0, 255;
+  }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-black text-foreground;
+    background: linear-gradient(to bottom, transparent, rgb(10, 10, 20)) rgb(0, 0, 0);
+  }
 }
 
 .neon-purple {
@@ -26,7 +50,7 @@ body {
 }
 
 .futuristic-button {
-  @apply bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 ease-in-out;
+  @apply bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 ease-in-out;
   box-shadow: 0 0 10px rgba(var(--neon-purple), 0.5), 0 0 20px rgba(var(--neon-purple), 0.3), inset 0 0 15px
     rgba(var(--neon-purple), 0.2);
 }
@@ -37,7 +61,22 @@ body {
 }
 
 .futuristic-panel {
-  @apply bg-black bg-opacity-50 border border-purple-500/30 rounded-lg p-6;
+  @apply bg-black bg-opacity-50 border border-primary/30 rounded-lg p-6;
   box-shadow: 0 0 20px rgba(var(--neon-purple), 0.1);
+}
+
+/* Hero section gradient */
+.hero-gradient {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(var(--neon-purple), 0.2) 100%);
+}
+
+/* Animated glow effect for certain elements */
+.glow-effect {
+  @apply animate-glow;
+}
+
+/* Glass effect for panels */
+.glass-panel {
+  @apply bg-black/30 backdrop-blur-sm border border-white/10;
 }
 

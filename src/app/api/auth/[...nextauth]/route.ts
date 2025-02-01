@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ profile }) {
-      return profile?.email?.endsWith("@me.bergen.edu") ?? false
+      return profile?.email?.endsWith("") ?? false
     },
     async redirect({ url, baseUrl }) {
       return url.startsWith(baseUrl) ? url : baseUrl
