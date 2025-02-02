@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession, signIn } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import type React from "react"
 
@@ -12,7 +12,7 @@ interface AuthButtonProps {
 }
 
 export default function AuthButton({ href, onClick, className, children }: AuthButtonProps) {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
 
   const handleClick = () => {
@@ -23,7 +23,7 @@ export default function AuthButton({ href, onClick, className, children }: AuthB
         onClick()
       }
     } else {
-      signIn()
+      router.push("/Login")
     }
   }
 

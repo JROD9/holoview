@@ -1,124 +1,181 @@
 "use client"
 
-import { useSession, signIn } from "next-auth/react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import React from "react"
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 
-interface InterviewRecord {
+interface CareerOutlook {
+  year: number
+  employment: number
+  medianPay: number
+}
+
+interface JobResource {
+  name: string
+  url: string
+  description: string
+}
+
+interface InterviewReport {
   id: string
   jobTitle: string
   date: string
-  status: "completed" | "scheduled" | "cancelled"
-  score?: number
+  overallScore: number
+  strengths: string[]
+  areasForImprovement: string[]
 }
 
 export default function Profile() {
-  const { data: session, status } = useSession()
-  const [interviewHistory, setInterviewHistory] = useState<InterviewRecord[]>([])
+  const [careerOutlook, setCareerOutlook] = useState<CareerOutlook[]>([])
+  const [jobResources, setJobResources] = useState<JobResource[]>([])
+  const [interviewReports, setInterviewReports] = useState<InterviewReport[]>([])
 
   useEffect(() => {
-    if (status === "authenticated") {
-      // Mock data (replace with API call in production)
-      setInterviewHistory([
-        { id: "1", jobTitle: "Software Engineer", date: "2025-02-01", status: "completed", score: 85 },
-        { id: "2", jobTitle: "Product Manager", date: "2025-02-15", status: "scheduled" },
-        { id: "3", jobTitle: "Data Scientist", date: "2025-01-15", status: "completed", score: 92 },
-      ])
-    }
-  }, [status])
+    // Mock data for career outlook (simulating data from Bureau of Labor Statistics)
+    setCareerOutlook([
+      { year: 2022, employment: 1622200, medianPay: 109020 },
+      { year: 2023, employment: 1659600, medianPay: 112180 },
+      { year: 2024, employment: 1697800, medianPay: 115340 },
+      { year: 2025, employment: 1736000, medianPay: 118500 },
+      { year: 2026, employment: 1774200, medianPay: 121660 },
+    ])
 
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-purple-500">Loading...</div>
-      </div>
-    )
-  }
+    // Mock data for job resources
+    setJobResources([
+      {
+        name: "LinkedIn",
+        url: "https://www.linkedin.com/jobs/",
+        description: "Professional networking and job search platform",
+      },
+      {
+        name: "Indeed",
+        url: "https://www.indeed.com/",
+        description: "Comprehensive job search engine",
+      },
+      {
+        name: "Glassdoor",
+        url: "https://www.glassdoor.com/Job/index.htm",
+        description: "Job listings with company reviews and salary information",
+      },
+      {
+        name: "Stack Overflow Jobs",
+        url: "https://stackoverflow.com/jobs",
+        description: "Tech-focused job board for developers",
+      },
+    ])
 
-  if (status === "unauthenticated") {
-    return (
-      <div className="container mx-auto px-4 py-24 text-center">
-        <h1 className="text-4xl font-bold mb-8 neon-purple">Profile Access</h1>
-        <p className="text-xl text-gray-300 mb-8">Please sign in to view your profile</p>
-        <button onClick={() => signIn("google")} className="futuristic-button text-lg px-8 py-3">
-          Sign In
-        </button>
-      </div>
-    )
-  }
+    // Mock data for interview reports
+    setInterviewReports([
+      {
+        id: "1",
+        jobTitle: "Senior Software Engineer",
+        date: "2025-03-15",
+        overallScore: 85,
+        strengths: ["Technical knowledge", "Problem-solving skills", "System design"],
+        areasForImprovement: ["Communication of complex ideas", "Behavioral question responses"],
+      },
+      {
+        id: "2",
+        jobTitle: "Product Manager",
+        date: "2025-02-28",
+        overallScore: 78,
+        strengths: ["Product vision", "User empathy", "Market analysis"],
+        areasForImprovement: ["Technical depth", "Data-driven decision making"],
+      },
+    ])
+  }, [])
 
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Profile Header */}
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-bold mb-4 neon-purple">Your Profile</h1>
-        <p className="text-gray-400">{session?.user?.email}</p>
+        <p className="text-gray-400">user@example.com</p>
       </div>
 
-      {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      {/* Career Outlook Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6 neon-purple">Career Outlook for Software Developers</h2>
         <div className="futuristic-panel">
-          <h3 className="text-lg font-semibold text-purple-400 mb-2">Total Interviews</h3>
-          <p className="text-3xl font-bold neon-purple">{interviewHistory.length}</p>
-        </div>
-        <div className="futuristic-panel">
-          <h3 className="text-lg font-semibold text-purple-400 mb-2">Average Score</h3>
-          <p className="text-3xl font-bold neon-purple">
-            {Math.round(
-              interviewHistory
-                .filter((interview) => interview.score)
-                .reduce((acc, curr) => acc + (curr.score || 0), 0) /
-                interviewHistory.filter((interview) => interview.score).length,
-            )}
-            %
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={careerOutlook}>
+              <XAxis dataKey="year" stroke="#fff" />
+              <YAxis yAxisId="left" stroke="#8884d8" />
+              <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+              <Tooltip contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #333" }} />
+              <Line yAxisId="left" type="monotone" dataKey="employment" stroke="#8884d8" name="Employment" />
+              <Line yAxisId="right" type="monotone" dataKey="medianPay" stroke="#82ca9d" name="Median Pay ($)" />
+            </LineChart>
+          </ResponsiveContainer>
+          <p className="text-sm text-gray-400 mt-4">
+            Source: Bureau of Labor Statistics (Projected data for Software Developers)
           </p>
         </div>
-        <div className="futuristic-panel">
-          <h3 className="text-lg font-semibold text-purple-400 mb-2">Upcoming Interviews</h3>
-          <p className="text-3xl font-bold neon-purple">
-            {interviewHistory.filter((interview) => interview.status === "scheduled").length}
-          </p>
-        </div>
-      </div>
+      </section>
 
-      {/* Interview History */}
-      <div className="futuristic-panel">
-        <h2 className="text-2xl font-bold mb-6 neon-purple">Interview History</h2>
-        <div className="space-y-4">
-          {interviewHistory.map((interview) => (
-            <div
-              key={interview.id}
-              className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 bg-gray-900/50 rounded-lg"
+      {/* Job Search Resources Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6 neon-purple">Job Search Resources</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {jobResources.map((resource) => (
+            <a
+              key={resource.name}
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="futuristic-panel hover:bg-purple-900/30 transition-colors"
             >
-              <div>
-                <h3 className="font-semibold text-lg text-purple-400">{interview.jobTitle}</h3>
-                <p className="text-gray-400">
-                  {new Date(interview.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
+              <h3 className="text-lg font-semibold text-purple-400 mb-2">{resource.name}</h3>
+              <p className="text-sm text-gray-400">{resource.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Interview Reports Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6 neon-purple">Your Interview Reports</h2>
+        <div className="space-y-4">
+          {interviewReports.map((report) => (
+            <div key={report.id} className="futuristic-panel">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-purple-400">{report.jobTitle}</h3>
+                  <p className="text-sm text-gray-400">
+                    {new Date(report.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-semibold text-purple-400">Overall Score</p>
+                  <p className="text-2xl font-bold neon-purple">{report.overallScore}%</p>
+                </div>
               </div>
-              <div className="mt-2 md:mt-0 flex items-center gap-4">
-                <span
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    interview.status === "completed"
-                      ? "bg-green-500/20 text-green-400"
-                      : interview.status === "scheduled"
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-red-500/20 text-red-400"
-                  }`}
-                >
-                  {interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
-                </span>
-                {interview.score && <span className="font-semibold text-purple-400">{interview.score}%</span>}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-lg font-semibold text-green-400 mb-2">Strengths</h4>
+                  <ul className="list-disc list-inside text-gray-300">
+                    {report.strengths.map((strength, index) => (
+                      <li key={index}>{strength}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-yellow-400 mb-2">Areas for Improvement</h4>
+                  <ul className="list-disc list-inside text-gray-300">
+                    {report.areasForImprovement.map((area, index) => (
+                      <li key={index}>{area}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* Quick Links */}
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
