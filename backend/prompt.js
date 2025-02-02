@@ -1,5 +1,7 @@
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
+import { writeFileSync } from "node:fs";
+
 dotenv.config();
 
 const client = new OpenAI({
@@ -7,15 +9,38 @@ const client = new OpenAI({
 });
 
 // intial prompt to ask 3 questions
-const getPrompt = async (prompt) => {
+const getQuestions = async (prompt) => {
     const response = await client.chat.completions.create({
         model: 'gpt-3.5-turbo',
         max_tokens: 100, // change when going to prod
-        temperature: 0.7, // Adjust creativity
+        temperature: 0.5, // Adjust creativity
         messages: [{"role": "user", "content": prompt}]
     });
-    console.log(response);
-    return response;
+    return response.choices[0].message.content;
 }
 
-export {getPrompt}
+const getAudioFile = async (prompt) => {
+    const response = await client.chat.completions.create({
+        model: 'gpt-4o-audio-preview',
+        modalities: ["text", "audio"],
+        audio: { voice: "alloy", format: "wav" },
+        messages: [
+            {
+            role: "user",
+            content: "Is a golden retriever a good family dog?"
+            }
+        ],
+        store: true,
+    });
+    return response.choices[0]
+}
+
+writeFileSync(
+    "response.wav",
+    Buffer.from(response.choices[0].message.audio.data, 'base64'),
+    { encoding: "utf-8" }
+  );
+
+  
+
+export {getQuestions}
