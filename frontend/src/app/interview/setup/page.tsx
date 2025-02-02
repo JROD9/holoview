@@ -29,7 +29,7 @@ export default function SetupInterview() {
     // Store interview settings
     localStorage.setItem("interviewJobTitle", jobTitle)
     localStorage.setItem("interviewDifficulty", difficulty)
-    router.push("/interview/practice")
+    router.push("/Practice")
   }
 
   return (
@@ -80,7 +80,7 @@ export default function SetupInterview() {
                 </select>
               </div>
               <button type="submit" className="futuristic-button w-full group text-lg">
-                Start Interview
+                Start Practice
                 <ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
               </button>
             </form>
