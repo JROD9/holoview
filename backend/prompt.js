@@ -43,4 +43,4 @@ writeFileSync(
 
   
 
-export {getQuestions}
+export {getQuestions, getAudioFile}

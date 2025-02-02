@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
 import Stopwatch from "./Stopwatch"
 import CameraFeed from "./CameraFeed"
+import axios from 'axios';
 
 const SpeechRecognitionModule = dynamic(() => import("react-speech-recognition"), { ssr: false })
 
@@ -29,7 +30,17 @@ export default function InterviewPractice() {
   const [isListening, setIsListening] = useState(false)
 
   useEffect(() => {
-    let recognition: any
+    const fetchPrompt = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/get-prompt/");
+        setTranscript(response.data); // Set fetched data as transcript
+      } catch (error) {
+        console.error("Error fetching prompt:", error);
+      }
+    }
+    fetchPrompt();
+    let recognition: any 
+
 
     const setupSpeechRecognition = async () => {
       const SpeechRecognition = (await SpeechRecognitionModule).default
@@ -67,7 +78,7 @@ export default function InterviewPractice() {
         recognition.stop()
       }
     }
-  }, [])
+  },[])
 
   const generateQuestion = useCallback(() => {
     setQuestion(`Tell me about your experience with ${jobTitle} related projects.`)
@@ -93,15 +104,15 @@ export default function InterviewPractice() {
     return () => {}
   }, [])
 
-  const toggleListening = async () => {
-    const SpeechRecognition = (await SpeechRecognitionModule).default
-    if (isListening) {
-      SpeechRecognition.stopListening()
-    } else {
-      SpeechRecognition.startListening({ continuous: true })
-    }
-    setIsListening(!isListening)
-  }
+  // const toggleListening = async () => {
+  //   const SpeechRecognition = (await SpeechRecognitionModule).default
+  //   if (isListening) {
+  //     SpeechRecognition.stopListening()
+  //   } else {
+  //     SpeechRecognition.startListening({ continuous: true })
+  //   }
+  //   setIsListening(!isListening)
+  // }
 
   const endInterview = () => {
     setIsListening(false)
@@ -215,4 +226,3 @@ export default function InterviewPractice() {
     </div>
   )
 }
-
