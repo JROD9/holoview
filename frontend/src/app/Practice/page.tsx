@@ -22,8 +22,15 @@ export default function InterviewPractice() {
   const [difficulty, setDifficulty] = useState("")
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState("")
+<<<<<<< HEAD
+  const [cameraError, setCameraError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+=======
   const [interviewEnded, setInterviewEnded] = useState(false)
   const [performanceScore, setPerformanceScore] = useState<PerformanceScore | null>(null)
+>>>>>>> c2c9da458ddbfd096070817f05733ee4c5e95e6d
   const interviewerVideoRef = useRef<HTMLVideoElement>(null)
   const [isBrowserSupported, setIsBrowserSupported] = useState(true)
   const [transcript, setTranscript] = useState("")
@@ -104,6 +111,7 @@ export default function InterviewPractice() {
     return () => {}
   }, [])
 
+<<<<<<< HEAD
   // const toggleListening = async () => {
   //   const SpeechRecognition = (await SpeechRecognitionModule).default
   //   if (isListening) {
@@ -113,6 +121,45 @@ export default function InterviewPractice() {
   //   }
   //   setIsListening(!isListening)
   // }
+=======
+<<<<<<< HEAD
+  const generateQuestion = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userMessage: "Design a rate-limited API system handling 10,000 requests/sec. Explain architecture, scaling, and trade-offs."
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed to get question')
+      
+      const data = await response.json()
+      setQuestion(data.reply || "Could not load question")
+    } catch (err) {
+      console.error('Error fetching question:', err)
+      setError('Failed to load question. Please try again.')
+      setQuestion("Explain the CAP theorem and its implications in distributed systems design.")
+    } finally {
+      setIsLoading(false)
+    }
+=======
+  const toggleListening = async () => {
+    const SpeechRecognition = (await SpeechRecognitionModule).default
+    if (isListening) {
+      SpeechRecognition.stopListening()
+    } else {
+      SpeechRecognition.startListening({ continuous: true })
+    }
+    setIsListening(!isListening)
+  }
+>>>>>>> 758df19da5afc7e5a3e29b3b38ca3ecdffb98a9f
 
   const endInterview = () => {
     setIsListening(false)
@@ -163,17 +210,16 @@ export default function InterviewPractice() {
         </button>
       </div>
     )
+>>>>>>> c2c9da458ddbfd096070817f05733ee4c5e95e6d
   }
 
   return (
     <div className="flex flex-col h-screen bg-gray-900 p-4 relative">
-      {/* Stopwatch */}
       <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
         <Stopwatch />
       </div>
 
       <div className="flex-1 flex flex-col md:flex-row gap-4">
-        {/* Interviewer Side */}
         <div className="w-full md:w-1/2 aspect-video relative rounded-lg overflow-hidden border border-purple-500/50">
           <video
             ref={interviewerVideoRef}
@@ -184,16 +230,27 @@ export default function InterviewPractice() {
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-75">
-            <p className="text-white text-lg">{question}</p>
+            {isLoading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
+                <span className="text-white">Generating complex question...</span>
+              </div>
+            ) : error ? (
+              <p className="text-red-400 text-sm">{error}</p>
+            ) : (
+              <p className="text-white text-lg">{question}</p>
+            )}
           </div>
         </div>
 
-        {/* User Camera Feed */}
         <div className="w-full md:w-1/2 aspect-video relative rounded-lg overflow-hidden border border-purple-500/50">
           <CameraFeed />
         </div>
       </div>
 
+<<<<<<< HEAD
+      <div className="mt-4">
+=======
       {/* Transcript Area */}
       <div className="mt-4 bg-gray-800 p-4 rounded-lg">
         <h3 className="text-white font-semibold mb-2">Real-time Transcript:</h3>
@@ -202,12 +259,22 @@ export default function InterviewPractice() {
 
       {/* User Response Area */}
       <div className="mt-4 flex gap-2">
+>>>>>>> c2c9da458ddbfd096070817f05733ee4c5e95e6d
         <textarea
           className="flex-grow p-2 bg-gray-800 text-white rounded-lg border border-purple-500/50 resize-none h-24"
           placeholder="Type your answer here..."
           value={answer}
           onChange={(e) => setAnswer(e.target.value)}
         ></textarea>
+<<<<<<< HEAD
+        <button 
+          onClick={generateQuestion} 
+          className="mt-2 futuristic-button"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Generating...' : 'Next Question'}
+        </button>
+=======
         <div className="flex flex-col gap-2">
           <button
             onClick={toggleListening}
@@ -222,6 +289,7 @@ export default function InterviewPractice() {
             End Interview
           </button>
         </div>
+>>>>>>> c2c9da458ddbfd096070817f05733ee4c5e95e6d
       </div>
     </div>
   )
