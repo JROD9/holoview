@@ -17,7 +17,7 @@ export default function Schedule() {
     // Here you would integrate with Google Calendar API
     localStorage.setItem("interviewDate", date)
     localStorage.setItem("interviewTime", time)
-    router.push("/interview/practice")
+    router.push("/Practice")
   }
 
   if (status === "loading") {
@@ -101,7 +101,7 @@ export default function Schedule() {
             <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
               After scheduling, take advantage of our practice sessions to hone your skills before the big day.
             </p>
-            <AuthButton href="/practice" className="futuristic-button text-lg px-8 py-3 group">
+            <AuthButton href="/Practice" className="futuristic-button text-lg px-8 py-3 group">
               Start Practicing Now
               <ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
             </AuthButton>
