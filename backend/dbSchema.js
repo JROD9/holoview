@@ -27,14 +27,3 @@ const report = new Schema({
         type: String
     }, 
 });
-
-// db scchema
-// user_id
-// reference num for credit report form intv
-// pointer to s3 bucket for txt file
-// name
-// email
-// username
-// number
-
-// other collection for reports
