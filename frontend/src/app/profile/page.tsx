@@ -2,8 +2,8 @@
 
 import { useSession, signIn } from "next-auth/react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
+import React from "react"
 
 interface InterviewRecord {
   id: string
@@ -15,7 +15,6 @@ interface InterviewRecord {
 
 export default function Profile() {
   const { data: session, status } = useSession()
-  const router = useRouter()
   const [interviewHistory, setInterviewHistory] = useState<InterviewRecord[]>([])
 
   useEffect(() => {

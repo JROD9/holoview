@@ -1,12 +1,10 @@
 "use client"
 
 import { signIn } from "next-auth/react"
-import { useSearchParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import React from "react"
 
 export default function Login() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -28,6 +26,7 @@ export default function Login() {
       if (result?.error) {
         setError(result.error)
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("An unexpected error occurred")
     } finally {

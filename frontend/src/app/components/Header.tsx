@@ -2,9 +2,10 @@
 
 import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
+import React from "react"
 
 export default function Header() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
 
   return (
     <header className="bg-black p-4">

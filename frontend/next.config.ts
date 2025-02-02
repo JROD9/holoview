@@ -1,7 +1,18 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+  images: {
+    domains: ['lh3.googleusercontent.com'], // Allow Google OAuth profile images
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  reactStrictMode: true,
+  transpilePackages: ['recharts'],
 
-export default nextConfig;
+}
+
+module.exports = nextConfig
