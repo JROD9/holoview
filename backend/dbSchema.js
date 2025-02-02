@@ -26,4 +26,12 @@ const report = new Schema({
     weaknesses: {
         type: String
     }, 
+    
 });
+
+const User = mongoose.model('user', user);
+const Report = mongoose.model('report', report);
+
+class DB {
+
+}
