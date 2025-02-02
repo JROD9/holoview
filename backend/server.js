@@ -19,7 +19,7 @@ mongoose.connect(process.env.DB_URI)
 
 app.get('/get-prompt', async (req, res) => {
     try {
-        const prompt = 'tell me a story about dogs';
+        const prompt = 'give me an interview question regarding a software enginnering role at Google. Make sure the response can be translated into an audio file';
         return await getQuestions(prompt)
     } catch (err) {
         console.log(err.message)
